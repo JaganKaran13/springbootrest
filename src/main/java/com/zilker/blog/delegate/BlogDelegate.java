@@ -9,10 +9,10 @@ import com.zilker.blog.bean.Blog;
 import com.zilker.blog.bean.NewBlog;
 import com.zilker.blog.constants.SqlQuery;
 import com.zilker.blog.utils.DatabaseConfig;
+import com.zilker.blog.utils.MyException;
 
 public class BlogDelegate {
 	DatabaseConfig dbConfig = new  DatabaseConfig();
-	
 	public NewBlog insertNewBlogDetails(NewBlog blogDetails) throws Exception {
 		Connection databaseConnection = dbConfig.getConnection();
 		try {
@@ -22,8 +22,9 @@ public class BlogDelegate {
 			insertStatement.setString(3, blogDetails.getBlogAuthor());
 			insertStatement.setInt(4, blogDetails.getBlogLike());
 			insertStatement.executeUpdate();
+			
 		} catch (Exception e) {
-			throw e;
+			throw new MyException("New Blog is not Created");
 		}
 		finally {
 			dbConfig.closeConnection(databaseConnection);
@@ -75,5 +76,36 @@ public class BlogDelegate {
 		}
 		return allBlogDetails;
 	}
+	
+	public Blog updateBlogDetails(Blog blogDetails) throws Exception {
+		Connection databaseConnection = dbConfig.getConnection();
+		Blog updatedBlog = new Blog();
+		try {
+			PreparedStatement updateStatement = databaseConnection.prepareStatement(SqlQuery.UPDATE_BLOG_DETAILS);
+			updateStatement.setString(1, blogDetails.getBlogName());
+			updateStatement.setString(2, blogDetails.getBlogDescription());
+			updateStatement.setString(3, blogDetails.getBlogAuthor());
+			updateStatement.setInt(4, blogDetails.getBlogLike());
+			updateStatement.setInt(5, blogDetails.getBlog_id());
+			updateStatement.executeUpdate();
+		}
+		finally {
+			dbConfig.closeConnection(databaseConnection);
+		}
+		updatedBlog = blogDetails;
 		
+		return updatedBlog;
+	}
+	
+	public void deleteBlogDetails(int blogId) throws Exception {
+		Connection databaseConnection = dbConfig.getConnection();
+		try {
+			PreparedStatement deleteStatement = databaseConnection.prepareStatement(SqlQuery.DELETE_BLOG_DETAILS);
+			deleteStatement.setInt(1, blogId);
+			deleteStatement.executeUpdate();
+		}
+		finally{
+			dbConfig.closeConnection(databaseConnection);
+		}
+	}
 }

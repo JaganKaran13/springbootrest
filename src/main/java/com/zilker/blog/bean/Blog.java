@@ -2,17 +2,17 @@ package com.zilker.blog.bean;
 
 public class Blog {
 	
-    private long blog_id;
+    private int blog_id;
     private String blogName;
     private String blogDescription;
     private String blogAuthor;
     private int blogLike;
 
-	public long getBlog_id() {
+	public int getBlog_id() {
 		return blog_id;
 	}
 
-	public void setBlog_id(long blog_id) {
+	public void setBlog_id(int blog_id) {
 		this.blog_id = blog_id;
 	}
 

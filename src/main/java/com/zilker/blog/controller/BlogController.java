@@ -20,7 +20,7 @@ public class BlogController {
 	BlogDelegate blogdelegate = new BlogDelegate();
 	
 	@PostMapping("/blog")
-	NewBlog newBlog(@RequestBody NewBlog newBlog) {
+	public NewBlog newBlog(@RequestBody NewBlog newBlog) {
 		NewBlog blogDetail = new NewBlog();
 		try {
 			blogDetail = blogdelegate.insertNewBlogDetails(newBlog);
@@ -31,7 +31,7 @@ public class BlogController {
 	}
 	
 	@GetMapping("blog/{id}")
-	Blog one(@PathVariable int id) {
+	public Blog getBlog(@PathVariable int id) {
 		Blog blogDetail = new Blog();
 		try {
 			blogDetail = blogdelegate.getBlogDetails(id);
@@ -42,7 +42,7 @@ public class BlogController {
 	}
 	
 	@GetMapping("/blog")
-	ArrayList<Blog> all() {
+	public ArrayList<Blog> getAllBlog() {
 		ArrayList<Blog> allBlogDetails = new ArrayList<Blog>();
 		try {
 			allBlogDetails = blogdelegate.getAllBlogDetails();
@@ -51,5 +51,27 @@ public class BlogController {
 		}
 		return allBlogDetails;
 	}
+	
+	@PutMapping("/blog/{id}")
+	public Blog updateBlog(@RequestBody Blog blogDetail){
+		Blog updatedBlogDetails = new Blog();
+		try {
+			updatedBlogDetails = blogdelegate.updateBlogDetails(blogDetail);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return updatedBlogDetails;
+	}
+	
+	@DeleteMapping("/blog/{id}")
+	public void deleteBlog(@PathVariable int id) {
+		try {
+			blogdelegate.deleteBlogDetails(id);
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
 	
 }
